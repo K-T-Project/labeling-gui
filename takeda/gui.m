@@ -16,12 +16,14 @@ function varargout = gui(varargin)
     else
         gui_mainfcn(gui_State, varargin{:});
     end
+    
+
 end
 
 function gui_OpeningFcn(hObject, eventdata, handles, varargin)
 
     handles.output = hObject;
-
+  %  handles.datastruct = [];
     guidata(hObject, handles);
 end
 
@@ -30,6 +32,12 @@ end
 function varargout = gui_OutputFcn(hObject, eventdata, handles) 
 
     varargout{1} = handles.output;
+
+end
+
+function figure1_DeleteFcn(hObject, eventdata, handles)
+    write_csv( handles.datastruct);
+    disp("ttt");
 end
 
     % --- Executes on button press in pushbutton9.
@@ -95,5 +103,12 @@ function edit1_CreateFcn(hObject, eventdata, handles)
     if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
         set(hObject,'BackgroundColor','white');
     end
+end
+
+function FileSelect(hObject, eventdata, handles)
+    selpath = uigetdir;
+    ddd = dir([selpath,'\**\*.png']);
+    handles.datastruct = ddd;
+        guidata(hObject, handles);
 end
 
