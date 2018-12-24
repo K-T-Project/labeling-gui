@@ -36,7 +36,7 @@ end
 
 function figure1_DeleteFcn(hObject, eventdata, handles)
     if handles.ReadingFlag
-        write_csv( handles.datastruct);
+        write_csv( handles.datastruct.data);
     end
 end
 
@@ -110,20 +110,23 @@ function FileSelect(hObject, eventdata, handles)
     if selpath ~= 0
         datadirectory = dir([selpath,'/**/*.png']);
         
-        DataDirectory = Data.empty;
-        j = 1;
-        for i = 1 :length(datadirectory)
-            if ~strcmp(datadirectory(i).name,'ID.png')
-                DataDirectory(j) = Data(datadirectory(i).folder,datadirectory(i).name);
-                j = j + 1;
-            end
-        end
-        if ~isempty(datadirectory)
+        DataDirectory = DataManage(datadirectory);
+
+        if ~isempty(DataDirectory)
             handles.datastruct = DataDirectory;
             handles.ReadingFlag = true;
+            DisplaySetting(handles)
             guidata(hObject, handles);
         end
+
     end
 end
 
+function DisplaySetting(handles)
+    img = handles.datastruct.CurrentImageGet();
+    imshow(img,'Parent',handles.axes1);
+    handles.text2.String = handles.datastruct.CurrentNameGet();
+    handles.edit2.String = handles.datastruct.currentnumber;
+    handles.text4.String = handles.datastruct.datanumber;
+end
 

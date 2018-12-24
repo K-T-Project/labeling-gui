@@ -36,7 +36,7 @@ end
 
 function figure1_DeleteFcn(hObject, eventdata, handles)
     if handles.ReadingFlag
-        write_csv( handles.datastruct);
+        write_csv( handles.datastruct.data);
     end
 end
 
@@ -108,16 +108,24 @@ end
 function FileSelect(hObject, eventdata, handles)
     selpath = uigetdir;
     if selpath ~= 0
-        datadirectory = dir([selpath,'\**\*.png']);
+        datadirectory = dir([selpath,'/**/*.png']);
         
-        for i = 1 : length(datadirectory)
-            
-        end
-        if length(datadirectory)
-            handles.datastruct = datadirectory;
+        DataDirectory = DataManage(datadirectory);
+
+        if ~isempty(DataDirectory)
+            handles.datastruct = DataDirectory;
             handles.ReadingFlag = true;
+            DisplaySetting(handles)
             guidata(hObject, handles);
         end
+
     end
+end
+
+function DisplaySetting(handles)
+    img = handles.datastruct.CurrentImageGet();
+    imshow(img,'Parent',handles.axes1);
+    handles.text2.String = handles.datastruct.CurrentNameGet();
+    handles.edit2.String = handels.datas
 end
 
