@@ -108,22 +108,16 @@ end
 function FileSelect(hObject, eventdata, handles)
     selpath = uigetdir;
     if selpath ~= 0
-        datadirectory = dir([selpath,'/**/*.png']);
+        datadirectory = dir([selpath,'\**\*.png']);
         
-        DataDirectory = Data.empty;
-        j = 1;
-        for i = 1 :length(datadirectory)
-            if ~strcmp(datadirectory(i).name,'ID.png')
-                DataDirectory(j) = Data(datadirectory(i).folder,datadirectory(i).name);
-                j = j + 1;
-            end
+        for i = 1 : length(datadirectory)
+            
         end
-        if ~isempty(datadirectory)
-            handles.datastruct = DataDirectory;
+        if length(datadirectory)
+            handles.datastruct = datadirectory;
             handles.ReadingFlag = true;
             guidata(hObject, handles);
         end
     end
 end
-
 
