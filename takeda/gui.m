@@ -36,16 +36,35 @@ end
 
 function figure1_DeleteFcn(hObject, eventdata, handles)
     if handles.ReadingFlag
-        write_csv( handles.datastruct.data);
+        %write_csv( handles.datastruct.data);
+        for i = 1:handles.datastruct.datanumber
+            if handles.datastruct.EvalGet(i) == "Å~"
+                delete(handles.datastruct.FullNameGet(i));
+            end
+        end
     end
 end
 
-    % --- Executes on button press in pushbutton9.
+    % éüÇ÷É{É^Éì
 function pushbutton9_Callback(hObject, eventdata, handles)
+    if handles.ReadingFlag
+        if handles.datastruct.currentnumber ~= handles.datastruct.datanumber 
+            handles.datastruct.currentnumber = handles.datastruct.currentnumber + 1;
+            DisplaySetting(handles);
+            guidata(hObject, handles);
+        end
+    end
 end
 
-    % --- Executes on button press in pushbutton10.
+    % ëOÇ÷É{É^Éì
 function pushbutton10_Callback(hObject, eventdata, handles)
+    if handles.ReadingFlag
+        if handles.datastruct.currentnumber ~= 1
+            handles.datastruct.currentnumber = handles.datastruct.currentnumber - 1;
+            DisplaySetting(handles);
+            guidata(hObject, handles);
+        end
+    end
 end
 
 
@@ -128,5 +147,106 @@ function DisplaySetting(handles)
     handles.text2.String = handles.datastruct.CurrentNameGet();
     handles.edit2.String = handles.datastruct.currentnumber;
     handles.text4.String = handles.datastruct.datanumber;
+    if handles.datastruct.CurrentEvalGet() == ""
+        handles.togglebutton2.Value = 0;
+        handles.togglebutton3.Value = 0;
+        handles.togglebutton4.Value = 0;
+        handles.togglebutton5.Value = 0;
+        handles.togglebutton6.Value = 0; 
+    elseif handles.datastruct.CurrentEvalGet() == "Åù"
+        handles.togglebutton2.Value = 1;
+        handles.togglebutton3.Value = 0;
+        handles.togglebutton4.Value = 0;
+        handles.togglebutton5.Value = 0; 
+        handles.togglebutton6.Value = 0; 
+    elseif handles.datastruct.CurrentEvalGet() == "ÅZ"
+        handles.togglebutton2.Value = 0;
+        handles.togglebutton3.Value = 1;
+        handles.togglebutton4.Value = 0;
+        handles.togglebutton5.Value = 0;
+        handles.togglebutton6.Value = 0; 
+    elseif handles.datastruct.CurrentEvalGet() == "Å¢"
+        handles.togglebutton2.Value = 0;
+        handles.togglebutton3.Value = 0;
+        handles.togglebutton4.Value = 1;
+        handles.togglebutton5.Value = 0;
+        handles.togglebutton6.Value = 0;
+    elseif handles.datastruct.CurrentEvalGet() == "Å~"
+        handles.togglebutton2.Value = 0;
+        handles.togglebutton3.Value = 0;
+        handles.togglebutton4.Value = 0;
+        handles.togglebutton5.Value = 1;
+        handles.togglebutton6.Value = 0;
+    elseif handles.datastruct.CurrentEvalGet() == "ÅH"
+        handles.togglebutton2.Value = 0;
+        handles.togglebutton3.Value = 0;
+        handles.togglebutton4.Value = 0;
+        handles.togglebutton5.Value = 0;
+        handles.togglebutton6.Value = 1;
+    end
 end
 
+function nijuumaru_Callback(hObject,eventdata,handles)
+    if handles.ReadingFlag
+        if handles.togglebutton2.Value == 1
+            handles.datastruct.CurrentEvalSet("Åù");
+            handles.togglebutton3.Value = 0;
+            handles.togglebutton4.Value = 0;
+            handles.togglebutton5.Value = 0; 
+            handles.togglebutton6.Value = 0;
+            guidata(hObject, handles);
+        else
+            handles.datastruct.CurrentEvalSet("");            
+        end
+    end
+end
+
+function batsu_Callback(hObject,eventdata,handles)
+    if handles.ReadingFlag
+        if handles.togglebutton5.Value == 1
+            handles.datastruct.CurrentEvalSet("Å~");
+            handles.togglebutton2.Value = 0;
+            handles.togglebutton3.Value = 0;
+            handles.togglebutton4.Value = 0; 
+            handles.togglebutton6.Value = 0;
+            guidata(hObject, handles);
+        else
+            handles.datastruct.CurrentEvalSet("");            
+        end
+    end
+end
+
+function figure1_KeyPressFcn(hObject,eventdata,handles)
+    if handles.ReadingFlag
+        if length(eventdata.Modifier) == 1
+            if strcmp(eventdata.Modifier, 'control')
+                if eventdata.Key == 'z'
+                    if handles.togglebutton5.Value == 1
+                        handles.datastruct.CurrentEvalSet("");
+                        handles.togglebutton2.Value = 0;
+                        handles.togglebutton3.Value = 0;
+                        handles.togglebutton4.Value = 0;
+                        handles.togglebutton5.Value = 0; 
+                        handles.togglebutton6.Value = 0;
+                    else
+                        handles.datastruct.CurrentEvalSet("Å~");
+                        handles.togglebutton2.Value = 0;
+                        handles.togglebutton3.Value = 0;
+                        handles.togglebutton4.Value = 0;
+                        handles.togglebutton5.Value = 1; 
+                        handles.togglebutton6.Value = 0;
+                    end
+                    guidata(hObject, handles);
+                end
+            end
+        end
+        
+        if strcmp(eventdata.Key,'leftarrow')
+            pushbutton10_Callback(hObject, eventdata, handles);
+        elseif strcmp(eventdata.Key,'rightarrow')
+            pushbutton9_Callback(hObject, eventdata, handles)
+        end
+        
+    end
+
+end
