@@ -198,7 +198,59 @@ function nijuumaru_Callback(hObject,eventdata,handles)
         else
             handles.datastruct.CurrentEvalSet("");            
         end
+    else
+        handles.togglebutton2.Value = 0;
     end
+end
+
+function maru_Callback(hObject,eventdata,handles)
+    if handles.ReadingFlag
+        if handles.togglebutton3.Value == 1
+            handles.datastruct.CurrentEvalSet("ÅZ");
+            handles.togglebutton2.Value = 0;
+            handles.togglebutton4.Value = 0;
+            handles.togglebutton5.Value = 0; 
+            handles.togglebutton6.Value = 0;
+            guidata(hObject, handles);
+        else
+            handles.datastruct.CurrentEvalSet("");            
+        end
+    else
+        handles.togglebutton3.Value = 0;
+    end
+end
+function sankaku_Callback(hObject,eventdata,handles)
+    if handles.ReadingFlag
+        if handles.togglebutton4.Value == 1
+            handles.datastruct.CurrentEvalSet("Å¢");
+            handles.togglebutton2.Value = 0;
+            handles.togglebutton3.Value = 0;
+            handles.togglebutton5.Value = 0; 
+            handles.togglebutton6.Value = 0;
+            guidata(hObject, handles);
+        else
+            handles.datastruct.CurrentEvalSet("");            
+        end
+    else
+        handles.togglebutton4.Value = 0;
+    end
+end
+function hatena_Callback(hObject,eventdata,handles)
+    if handles.ReadingFlag
+        if handles.togglebutton6.Value == 1
+            handles.datastruct.CurrentEvalSet("ÅH");
+            handles.togglebutton2.Value = 0;
+            handles.togglebutton3.Value = 0;
+            handles.togglebutton4.Value = 0; 
+            handles.togglebutton5.Value = 0;
+            guidata(hObject, handles);
+        else
+            handles.datastruct.CurrentEvalSet("");            
+        end
+    else
+        handles.togglebutton6.Value = 0;
+    end
+        
 end
 
 function batsu_Callback(hObject,eventdata,handles)
@@ -213,6 +265,8 @@ function batsu_Callback(hObject,eventdata,handles)
         else
             handles.datastruct.CurrentEvalSet("");            
         end
+    else
+        handles.togglebutton5.Value = 0;
     end
 end
 
@@ -237,6 +291,8 @@ function figure1_KeyPressFcn(hObject,eventdata,handles)
                         handles.togglebutton6.Value = 0;
                     end
                     guidata(hObject, handles);
+                elseif  eventdata.Key == 'y'
+                    sankaku_Callback(hObject,eventdata,handles);
                 end
             end
         end
